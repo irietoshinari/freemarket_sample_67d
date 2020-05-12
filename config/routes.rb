@@ -7,8 +7,25 @@ Rails.application.routes.draw do
     post 'addresses', to: 'users/registrations#create_address'
     # post 'card',to: 'users/registrations#create_credit_cards' ← 追加実装
   root 'items#index'
-  resources :items
+  resources :items do
+    collection do
+      get "set_images"
+      # 編集箇所ここから
+      get "set_parents"
+      get "set_children", defaults: { format: 'json' }
+      get "set_grandchildren", defaults: { format: 'json' }
+      # 編集箇所ここまで
+    end
+    # collection do
+    #   get "search"
+    #   get "category/items/search", to: "items#search", defaults: { format: "json" }
+    #   get 'category/get_category_children', to: 'items#get_category_children', defaults: { format: 'json' }
+    #   get 'category/get_category_grandchildren', to: 'items#get_category_grandchildren', defaults: { format: 'json' }
+    # end
+  end
   resources :users, only: :show
+    
+
   
     
   post "logout" => "users#logout"
